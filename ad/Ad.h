@@ -4,5 +4,7 @@ namespace AdExample
 {
     class Ad
     {
+    public:
+        Ad();
     };
 }
