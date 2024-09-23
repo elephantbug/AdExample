@@ -25,7 +25,7 @@ if(IOS)
 
     message("Copy ${CMAKE_CURRENT_SOURCE_DIR}/Podfile -> ${CMAKE_BINARY_DIR}")
     add_custom_target(copy_podfile
-        COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${CMAKE_CURRENT_SOURCE_DIR}/Podfile"
             "${CMAKE_BINARY_DIR}"
         COMMENT "Copying Podfile"
