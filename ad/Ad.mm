@@ -4,32 +4,50 @@
 
 using namespace AdExample;
 
-// AbstractClass.h 
-@interface AdImpl <YMAInterstitialAdLoaderDelegate>
-- (void)method1; 
-- (void)method2; 
+@interface AdImpl : NSObject <YMAInterstitialAdLoaderDelegate>
+{
+    Ad* m_ad;
+    YMAInterstitialAdLoader* m_loader;
+}
+- (void)loadAd; 
 @end
-// AbstractClass.m 
+
 @implementation AdImpl 
-- (void)method1 { 
-   NSLog(@"Method 1"); 
-   YMAInterstitialAdLoader *loader = [[YMAInterstitialAdLoader alloc]init];
-   loader.delegate = self;
-} 
-- (void)method2 { 
-   NSLog(@"Method 2"); 
+
+- (id)initFromCpp:(Ad *)ad
+{
+    if (self = [super init])
+    {
+        m_loader = [[YMAInterstitialAdLoader alloc]init];
+        m_loader.delegate = self;
+        m_ad = ad;
+    }
+    return self;
+}
+
+- (void)loadAd
+{ 
+   NSLog(@"YMAInterstitialAdLoader::loadAd"); 
+
+   YMAAdRequestConfiguration* configuration = [[YMAAdRequestConfiguration alloc]initWithAdUnitID:@"R-M-XXXXX-YY"];
+   
+   [m_loader loadAd:configuration];
 } 
 
-- (void)interstitialAdLoader:(YMAInterstitialAdLoader * _Nonnull)adLoader didLoad:(YMAInterstitialAd * _Nonnull)interstitialAd {
+- (void)interstitialAdLoader:(YMAInterstitialAdLoader * _Nonnull)adLoader didLoad:(YMAInterstitialAd * _Nonnull)interstitialAd
+{
+   NSLog(@"YMAInterstitialAdLoader::didLoad"); 
 }
 
 
-- (void)interstitialAdLoader:(YMAInterstitialAdLoader * _Nonnull)adLoader didFailToLoadWithError:(YMAAdRequestError * _Nonnull)error {
-
+- (void)interstitialAdLoader:(YMAInterstitialAdLoader * _Nonnull)adLoader didFailToLoadWithError:(YMAAdRequestError * _Nonnull)error
+{
+   NSLog(@"YMAInterstitialAdLoader::didFailToLoadWithError"); 
 }
+
 @end
 
 Ad::Ad()
 {
-    m_impl = [[AdImpl alloc]init];
+    m_impl = [[AdImpl alloc]initFromCpp:this];
 }
