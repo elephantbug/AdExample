@@ -1,6 +1,6 @@
 #pragma once
 
-@class AdImpl;
+#include <memory>
 
 namespace AdExample
 {
@@ -8,10 +8,10 @@ namespace AdExample
     {
     public:
 
-        Ad();
+        virtual void load() = 0;
 
-    private:
-
-        AdImpl* m_impl;
+        virtual ~Ad() = default;
     };
+
+    std::shared_ptr<Ad> createAd();
 }
